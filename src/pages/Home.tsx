@@ -1,35 +1,42 @@
 'use client'
 import { useState } from "react";
+import useCreateUser from "../../services/mutate";
+import { IUser } from "../../Types/types";
+
 
 export default function HomePage() {
-    const [form, setForm] = useState({ name: '', email: '', password: '' });
+    const { mutate } = useCreateUser();
+    const [user, setUser] = useState<IUser>({
+        name: '',
+        email: '',
+        password: ''
+    })
 
-    const handleChange = (e:React.ChangeEvent<HTMLInputElement>) => {
-        setForm({ ...form, [e.target.name]: e.target.value });
-    }
-
-    const handleSubmit = async (e: React.FormEvent) => {
+    const handleSubmit = (e:React.FormEvent) => {
         e.preventDefault();
-
-        const res = await fetch('/api/users', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(form),
-        });
-
-        if (res.ok) {
-            alert('Usuário salvo com sucesso!');
-            setForm({ name: '', email: '', password: '' });
-        } else {
-            alert('Erro ao salvar usuário');
-        }
+        mutate(user);
     }
 
     return (
         <form onSubmit={handleSubmit}>
-            <input type="text" name="name" placeholder="Nome" onChange={handleChange} value={form.name} />
-            <input type="email" name="email" placeholder="Email" onChange={handleChange} value={form.email} />
-            <input type="password" name="password" placeholder="Senha" onChange={handleChange} value={form.password} />
+            <input
+                type="text"
+                placeholder="Name"
+                value={user.name}
+                onChange={(e) => setUser({ ...user, name: e.target.value })}
+            />
+            <input
+                type="email"
+                placeholder="Email"
+                value={user.email}
+                onChange={(e) => setUser({ ...user, email: e.target.value })}
+            />
+            <input
+                type="password"
+                placeholder="Password"
+                value={user.password}
+                onChange={(e) => setUser({ ...user, password: e.target.value })}
+            />
             <button type="submit">Salvar</button>
         </form>
     )
