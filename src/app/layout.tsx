@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import QueryProvider from "@/providers/query-provider";
+import { AlertProvider } from "@/context/AlertContext";
+import { AlertPopUp } from "@/components/Alert/Alert";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -26,9 +28,12 @@ export default function RootLayout({
   return (
     <html lang="pt-br">
       <body className={`${geistSans.variable} ${geistMono.variable}`}>
-        <QueryProvider>
-          {children}
-        </QueryProvider>
+        <AlertProvider>
+            <QueryProvider>
+              {children}
+            </QueryProvider>
+          <AlertPopUp />
+        </AlertProvider>
       </body>
     </html>
   );
