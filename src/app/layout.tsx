@@ -27,14 +27,14 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="pt-br">
-      <body className={`${geistSans.variable} ${geistMono.variable}`}>
-        <AlertProvider>
-            <QueryProvider>
-              {children}
-            </QueryProvider>
-          <AlertPopUp />
-        </AlertProvider>
-      </body>
+      <AlertProvider>
+        <QueryProvider>
+          <body className={`${geistSans.variable} ${geistMono.variable}`}>
+            {children}
+            <AlertPopUp />
+          </body>
+        </QueryProvider>
+      </AlertProvider>
     </html>
   );
 }
