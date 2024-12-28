@@ -17,8 +17,13 @@ const LoginPage = () => {
   });
 
   const onSubmit = (data: ILogin) => {
-    loginMutation.mutate({ email: data.email, password: data.password });
-  }
+    loginMutation.mutate({ email: data.email, password: data.password }, {
+      onSuccess: () => {
+        login(data.email);
+        router.push("/");
+      }
+    });
+  };
 
   return (
     <Container>
