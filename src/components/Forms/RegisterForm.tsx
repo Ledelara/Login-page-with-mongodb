@@ -6,10 +6,11 @@ interface RegisterFormProps {
     disabled?: boolean;
     onSubmit: (e: React.FormEvent) => void;
     onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+    errors?: Record<string, string>;
 }
 
 export default function RegisterForm(props: RegisterFormProps) {
-    const { values, onSubmit, onChange, disabled } = props;
+    const { values, onSubmit, onChange, disabled, errors } = props;
 
     return (
         <Container
@@ -44,6 +45,8 @@ export default function RegisterForm(props: RegisterFormProps) {
                     value={values.name}
                     onChange={onChange}
                     name="name"
+                    error={!!errors?.name} 
+                    helperText={errors?.name}
                     style={{
                         width: '100%'
                     }}
@@ -55,6 +58,8 @@ export default function RegisterForm(props: RegisterFormProps) {
                     value={values.email}
                     onChange={onChange}
                     name="email"
+                    error={!!errors?.email} 
+                    helperText={errors?.email}
                     style={{
                         width: '100%'
                     }}
@@ -66,6 +71,8 @@ export default function RegisterForm(props: RegisterFormProps) {
                     value={values.password}
                     onChange={onChange}
                     name="password"
+                    error={!!errors?.password}
+                    helperText={errors?.password}
                     style={{
                         width: '100%'
                     }}
