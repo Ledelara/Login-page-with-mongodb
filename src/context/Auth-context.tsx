@@ -1,3 +1,4 @@
+'use client'
 import { createContext, useContext, useState, ReactNode, useEffect } from "react";
 import jwt_decode from "jwt-decode";
 import { useRouter } from "next/router";
