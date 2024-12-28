@@ -1,16 +1,20 @@
 import { Button, Container, TextField } from "@mui/material";
 import { IUser } from "../../../Types/types";
+import { useForm } from "react-hook-form";
+import { userSchema } from "@/schemas/userSchema";
+import { zodResolver } from "@hookform/resolvers/zod";
+import useCreateUser from "../../../services/mutate";
 
-interface RegisterFormProps {
-    values: IUser;
-    disabled?: boolean;
-    onSubmit: (e: React.FormEvent) => void;
-    onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-    errors?: Record<string, string>;
-}
+export default function RegisterForm() {
+    const { register, handleSubmit, formState: { errors } } = useForm<IUser>({
+        resolver: zodResolver(userSchema),
+    });
 
-export default function RegisterForm(props: RegisterFormProps) {
-    const { values, onSubmit, onChange, disabled, errors } = props;
+    const { createUserMutation, loading } = useCreateUser();
+
+    const onSubmit = (data: IUser) => {
+        createUserMutation.mutate(data);
+    };
 
     return (
         <Container
@@ -30,7 +34,7 @@ export default function RegisterForm(props: RegisterFormProps) {
             }}
         >
             <form 
-                onSubmit={onSubmit} 
+                onSubmit={handleSubmit(onSubmit)} 
                 style={{
                     width: '100%', 
                     display: 'flex', 
@@ -42,11 +46,9 @@ export default function RegisterForm(props: RegisterFormProps) {
                     id="name"
                     label="Nome"
                     variant="outlined"
-                    value={values.name}
-                    onChange={onChange}
-                    name="name"
-                    error={!!errors?.name} 
-                    helperText={errors?.name}
+                    {...register('name')}
+                    error={!!errors?.name}
+                    helperText={errors?.name?.message}
                     style={{
                         width: '100%'
                     }}
@@ -55,11 +57,9 @@ export default function RegisterForm(props: RegisterFormProps) {
                     id="email"
                     label="Email"
                     variant="outlined"
-                    value={values.email}
-                    onChange={onChange}
-                    name="email"
-                    error={!!errors?.email} 
-                    helperText={errors?.email}
+                    {...register('email')}
+                    error={!!errors?.email}
+                    helperText={errors?.email?.message}
                     style={{
                         width: '100%'
                     }}
@@ -68,11 +68,10 @@ export default function RegisterForm(props: RegisterFormProps) {
                     id="password"
                     label="Senha"
                     variant="outlined"
-                    value={values.password}
-                    onChange={onChange}
-                    name="password"
+                    type="password"
+                    {...register('password')}
                     error={!!errors?.password}
-                    helperText={errors?.password}
+                    helperText={errors?.password?.message}
                     style={{
                         width: '100%'
                     }}
@@ -80,7 +79,7 @@ export default function RegisterForm(props: RegisterFormProps) {
                 <Button 
                     type="submit" 
                     variant="contained"
-                    disabled={disabled}
+                    disabled={loading}
                     style={{
                         width: '100%'
                     }}
