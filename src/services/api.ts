@@ -1,5 +1,5 @@
 import axios from "axios";
-import { IUser } from "../src/@types/types";
+import { IUser } from "../@types/types";
 
 const api = axios.create({
     baseURL: "/api",
