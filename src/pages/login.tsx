@@ -1,6 +1,6 @@
 'use client';
 import { AlertPopUp } from "@/components/Alert/Alert";
-import LoginPage from "@/components/Forms/LoginForm";
+import LoginForm from "@/components/Forms/LoginForm";
 import { AlertProvider } from "@/context/AlertContext";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
@@ -10,7 +10,7 @@ export default function Login() {
     return (
         <QueryClientProvider client={queryClient}>
             <AlertProvider>
-                <LoginPage />
+                <LoginForm />
                 <AlertPopUp />
             </AlertProvider>
         </QueryClientProvider>

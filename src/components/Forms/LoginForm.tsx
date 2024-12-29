@@ -6,7 +6,7 @@ import { loginSchema } from "@/schemas/loginSchema";
 import { ILogin } from "../../../Types/types";
 import { useLogin } from "../../../services/mutate";
 
-const LoginPage = () => {
+const LoginForm = () => {
   const { loginMutation, loading, error } = useLogin();
   const router = useRouter();
 
@@ -49,4 +49,4 @@ const LoginPage = () => {
   );
 };
 
-export default LoginPage;
+export default LoginForm;
