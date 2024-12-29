@@ -1,20 +1,20 @@
-import { Button, Container, TextField } from "@mui/material";
-import { IUser } from "../../@types/types";
-import { useForm } from "react-hook-form";
-import { userSchema } from "@/schemas/userSchema";
+import { IUser } from "@/@types/types";
+import { loginSchema } from "@/schemas/loginSchema";
+import { useLoginUser } from "@/services/mutate";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useCreateUser } from "../../services/mutate";
+import { Button, Container, TextField } from "@mui/material";
+import { useForm } from "react-hook-form";
 
-export default function RegisterForm() {
+export default function LoginForm() {
     const { register, handleSubmit, formState: { errors } } = useForm<IUser>({
-        resolver: zodResolver(userSchema),
+        resolver: zodResolver(loginSchema),
     });
 
-    const { createUserMutation, loading } = useCreateUser();
+    const { loginUserMutation, loading } = useLoginUser();
 
     const onSubmit = (data: IUser) => {
-        createUserMutation.mutate(data);
-    };
+        loginUserMutation.mutate(data);
+    }
 
     return (
         <Container
@@ -28,12 +28,12 @@ export default function RegisterForm() {
                 justifyContent: 'center',
                 alignItems: 'center',
                 gap: '10px',
-                width: '300px', 
+                width: '300px',
                 margin: 'auto',
                 marginTop: '50px'
             }}
         >
-            <form 
+            <form
                 onSubmit={handleSubmit(onSubmit)} 
                 style={{
                     width: '100%', 
@@ -42,17 +42,6 @@ export default function RegisterForm() {
                     gap: '10px' 
                 }}
             >
-                <TextField
-                    id="name"
-                    label="Nome"
-                    variant="outlined"
-                    {...register('name')}
-                    error={!!errors?.name}
-                    helperText={errors?.name?.message}
-                    style={{
-                        width: '100%'
-                    }}
-                />
                 <TextField
                     id="email"
                     label="Email"
