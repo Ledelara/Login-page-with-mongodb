@@ -1,9 +1,10 @@
+'use client';
 import { useAuth } from "@/context/AuthContext";
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import { ROUTE_ENDPOINTS } from "../../services/constants/RouteConstants";
 import Login from "@/pages/login";
 import Register from "@/pages/register";
-import HomePage from "@/pages/home";
+import HomePage from "@/pages/Home";
 
 export default function Router() {
     const { isAuthenticated } = useAuth();
