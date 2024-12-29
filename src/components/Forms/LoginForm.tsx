@@ -1,6 +1,5 @@
 import { useRouter } from "next/router";
 import { TextField, Button, Container } from "@mui/material";
-import { useAuth } from "@/context/Auth-context";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { loginSchema } from "@/schemas/loginSchema";
@@ -8,7 +7,6 @@ import { ILogin } from "../../../Types/types";
 import { useLogin } from "../../../services/mutate";
 
 const LoginPage = () => {
-  const { login } = useAuth();
   const { loginMutation, loading, error } = useLogin();
   const router = useRouter();
 
@@ -19,7 +17,6 @@ const LoginPage = () => {
   const onSubmit = (data: ILogin) => {
     loginMutation.mutate({ email: data.email, password: data.password }, {
       onSuccess: () => {
-        login(data.email);
         router.push("/");
       }
     });
