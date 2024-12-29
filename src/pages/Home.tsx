@@ -1,9 +1,9 @@
 'use client'
-import RegisterForm from "@/components/Forms/RegisterForm";
+import HomeComponent from "@/components/Home/Home";
 
 export default function HomePage() {
     
     return (
-        <RegisterForm />
+        <HomeComponent />
     )
 }
