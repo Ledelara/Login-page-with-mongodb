@@ -1,11 +1,10 @@
 'use client'
-import { useMutation, useQueryClient } from "@tanstack/react-query"
+import { useMutation } from "@tanstack/react-query"
 import { createUser } from "./api";
 import { useState } from "react";
 import { useAlert } from "@/hooks/useAlert";
 
 const useCreateUser = () => {
-    const queryClient = useQueryClient();
     const [error, setError] = useState<string | null>(null);
     const [loading, setLoading] = useState<boolean>(false);
     const { showAlert } = useAlert()
@@ -17,9 +16,6 @@ const useCreateUser = () => {
             setError(null);
         },
         onSuccess: (data) => {
-            queryClient.invalidateQueries({
-                queryKey: ["users"],
-            });
             console.log("User created:", data);
             setLoading(false);
             showAlert("Usuário criado com sucesso!", "success");

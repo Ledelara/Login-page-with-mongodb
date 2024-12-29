@@ -1,9 +1,9 @@
 import { Button, Container, TextField } from "@mui/material";
-import { IUser } from "../../../Types/types";
+import { IUser } from "../../@types/types";
 import { useForm } from "react-hook-form";
 import { userSchema } from "@/schemas/userSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
-import useCreateUser from "../../../services/mutate";
+import useCreateUser from "../../services/mutate";
 
 export default function RegisterForm() {
     const { register, handleSubmit, formState: { errors } } = useForm<IUser>({
