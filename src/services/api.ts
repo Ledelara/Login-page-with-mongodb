@@ -2,7 +2,7 @@ import axios from "axios";
 import { IUser } from "../@types/types";
 
 const api = axios.create({
-    baseURL: "https://auth-server-mongodb.onrender.com/api",
+    baseURL: process.env.NEXT_PUBLIC_API_BASE_URL,
 });
 
 export const createUser = async (user: IUser): Promise<IUser> => {
