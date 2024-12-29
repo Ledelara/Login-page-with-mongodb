@@ -1,18 +1,9 @@
 'use client'
-import { AlertPopUp } from "@/components/Alert/Alert";
-import RegisterForm from "@/components/Forms/RegisterForm";
-import { AlertProvider } from "@/context/AlertContext";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import HomeComponent from "@/components/Home/Home";
 
 export default function HomePage() {
-    const queryClient = new QueryClient();
     
     return (
-        <QueryClientProvider client={queryClient}>
-            <AlertProvider>
-                <RegisterForm />
-                <AlertPopUp />
-            </AlertProvider>
-        </QueryClientProvider>
+        <HomeComponent />
     )
 }
