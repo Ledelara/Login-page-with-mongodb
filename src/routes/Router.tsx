@@ -15,7 +15,7 @@ export default function Router() {
                 path={path}
                 element={isAuthenticated ? <Navigate to={ROUTE_ENDPOINTS.HOME} /> : element}
             />
-        )
+        );
     }
 
     function AuthRoute(path: string, element: React.ReactNode) {
@@ -24,7 +24,7 @@ export default function Router() {
                 path={path}
                 element={isAuthenticated ? element : <Navigate to={ROUTE_ENDPOINTS.LOGIN} />}
             />
-        )
+        );
     }
 
     return (
@@ -35,5 +35,5 @@ export default function Router() {
                 {AuthRoute(ROUTE_ENDPOINTS.HOME, <HomePage />)}
             </Routes>
         </BrowserRouter>
-    )
+    );
 }
