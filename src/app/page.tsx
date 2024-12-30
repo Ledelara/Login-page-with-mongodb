@@ -1,12 +1,15 @@
-import HomePage from "@/pages/Home";
+import { AuthProvider } from "@/context/AuthContext.";
 import styles from "./page.module.css";
+import Router from "@/routes/Router";
 
 export default function Home() {
   return (
-    <div className={styles.page}>
-      <main className={styles.main}>
-        <HomePage />
-      </main>
-    </div>
+    <AuthProvider>
+      <div className={styles.page}>
+        <main className={styles.main}>
+          <Router />
+        </main>
+      </div>
+    </AuthProvider>
   );
 }

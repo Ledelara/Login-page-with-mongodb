@@ -4,6 +4,7 @@ import "./globals.css";
 import QueryProvider from "@/providers/query-provider";
 import { AlertProvider } from "@/context/AlertContext";
 import { AlertPopUp } from "@/components/Alert/Alert";
+import { AuthProvider } from "@/context/AuthContext.";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -28,12 +29,14 @@ export default function RootLayout({
   return (
     <html lang="pt-br">
       <body className={`${geistSans.variable} ${geistMono.variable}`}>
-        <AlertProvider>
-            <QueryProvider>
+        <QueryProvider>
+          <AlertProvider>
+            <AuthProvider>
               {children}
-            </QueryProvider>
-          <AlertPopUp />
-        </AlertProvider>
+              <AlertPopUp />
+            </AuthProvider>
+          </AlertProvider>
+        </QueryProvider>
       </body>
     </html>
   );

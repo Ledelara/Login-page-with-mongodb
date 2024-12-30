@@ -1,4 +1,5 @@
 import { IUser } from "@/@types/types";
+import { useAuth } from "@/context/AuthContext.";
 import { loginSchema } from "@/schemas/loginSchema";
 import { useLoginUser } from "@/services/mutate";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -6,6 +7,7 @@ import { Button, Container, TextField } from "@mui/material";
 import { useForm } from "react-hook-form";
 
 export default function LoginForm() {
+    const { logout } = useAuth();
     const { register, handleSubmit, formState: { errors } } = useForm<IUser>({
         resolver: zodResolver(loginSchema),
     });
@@ -73,7 +75,10 @@ export default function LoginForm() {
                         width: '100%'
                     }}
                 >
-                    Cadastrar
+                    Entrar
+                </Button>
+                <Button onClick={logout}>
+                    Logout
                 </Button>
             </form>
         </Container>
