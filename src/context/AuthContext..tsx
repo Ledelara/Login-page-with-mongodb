@@ -10,6 +10,7 @@ interface AuthContextProps {
     login: (credentials: Omit<IUser, "name">) => Promise<void>;
     logout: () => void;
     isAuthenticated: boolean;
+    isInitialized: boolean;
 }
 
 const AuthContext = createContext<AuthContextProps | undefined>(undefined);
@@ -39,7 +40,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
                 localStorage.removeItem("user");
             }
         }
-
         setIsInitialized(true);
     }, []);
 
@@ -74,7 +74,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
 
     return (
-        <AuthContext.Provider value={{ user, login, logout, isAuthenticated: !!user }}>
+        <AuthContext.Provider value={{ user, login, logout, isAuthenticated: !!user, isInitialized }}>
             {children}
         </AuthContext.Provider>
     );
