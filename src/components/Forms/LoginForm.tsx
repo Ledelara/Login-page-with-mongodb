@@ -73,7 +73,7 @@ export default function LoginForm() {
                         width: '100%'
                     }}
                 >
-                    Cadastrar
+                    Entrar
                 </Button>
             </form>
         </Container>
