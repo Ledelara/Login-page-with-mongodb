@@ -13,10 +13,6 @@ export default function Router() {
     console.log('Autenticado: ', isAuthenticated);
     console.log('Inicializado: ', isInitialized);
 
-    if (!isInitialized) {
-        return <div>Loading...</div>;
-    }
-
     return (
         <BrowserRouter>
             <Routes>

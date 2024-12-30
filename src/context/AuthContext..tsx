@@ -4,6 +4,7 @@ import React, { createContext, useContext, useEffect, useState } from "react";
 import { IUser, ILoginResponse } from "@/@types/types";
 import { useRouter } from "next/navigation";
 import { useLoginUser } from "@/services/mutate";
+import { Box, CircularProgress } from "@mui/material";
 
 interface AuthContextProps {
     user: IUser | null;
@@ -70,7 +71,11 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     };
 
     if (!isInitialized) {
-        return <div>Loading...</div>;
+        return (
+            <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
+                <CircularProgress />
+            </Box>
+        )
     }
 
     return (
