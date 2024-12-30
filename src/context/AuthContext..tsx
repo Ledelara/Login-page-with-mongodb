@@ -1,77 +1,65 @@
+'use client';
+
+import React, { createContext, useContext, useEffect, useState } from "react";
+
 import { IUser } from "@/@types/types";
-import { createContext, ReactNode, useContext, useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
+import { useLoginUser } from "@/services/mutate";
 
-interface AuthContextType {
-    user: IUser | null;
-    isAuthenticated: boolean;
-    login: (token: string) => void;
-    logout: () => void;
-    loading: boolean;
+interface AuthContextProps {
+  user: IUser | null;
+  login: (user: Omit<IUser, "name">) => Promise<void>;
+  logout: () => void;
+  isAuthenticated: boolean;
 }
 
-const AuthContext = createContext<AuthContextType | undefined>(undefined);
+const AuthContext = createContext<AuthContextProps | undefined>(undefined);
 
-interface AuthProviderProps {
-    children: ReactNode;
-}
-const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
-    const [user, setUser] = useState<IUser | null>(null);
-    const [loading, setLoading] = useState<boolean>(true);
+export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  const [user, setUser] = useState<IUser | null>(null);
+  const router = useRouter();
+  const { loginUserMutation } = useLoginUser();
 
-    useEffect(() => {
-        const token = localStorage.getItem('authToken');
-        if (token) {
-            fetchUser(token);
-        } else {
-            setLoading(false);
-        }
-    }, []);
-
-    const fetchUser = async (token: string) => {
-        try {
-            const response = await fetch('http://localhost:5000/api/auth/profile', {
-                headers: { Authorization: `Bearer ${token}` },
-            });
-
-            if (response.ok) {
-                const userData = await response.json();
-                setUser(userData);
-            } else {
-                localStorage.removeItem('authToken');
-                setUser(null);
-            }
-        } catch (error) {
-            console.error('Erro ao buscar usuário:', error);
-        } finally {
-            setLoading(false);
-        }
-    };
-
-    const login = async (token: string) => {
-        localStorage.setItem('authToken', token);
-        await fetchUser(token);
-    };
-
-    const logout = () => {
-        localStorage.removeItem('authToken');
-        setUser(null);
-    };
-
-    const isAuthenticated = user !== null;
-
-    return (
-        <AuthContext.Provider value={{ user, isAuthenticated, login, logout, loading }}>
-            {children}
-        </AuthContext.Provider>
-    );
-};
-
-const useAuth = (): AuthContextType => {
-    const context = useContext(AuthContext);
-    if (context === undefined) {
-        throw new Error('useAuth must be used within an AuthProvider');
+  useEffect(() => {
+    const storedToken = localStorage.getItem("token");
+    if (storedToken) {
+      const storedUser = localStorage.getItem("user");
+      if (storedUser) {
+        setUser(JSON.parse(storedUser));
+      }
     }
-    return context;
+  }, []);
+
+  const login = async (credentials: Omit<IUser, "name">) => {
+    try {
+      const loggedUser = await loginUserMutation.mutateAsync(credentials);
+      setUser(loggedUser);
+      localStorage.setItem("token", loggedUser.token || "");
+      localStorage.setItem("user", JSON.stringify(loggedUser));
+      router.push("/");
+    } catch (error) {
+      console.error("Erro ao fazer login:", error);
+    }
+  };
+
+  const logout = () => {
+    setUser(null);
+    localStorage.removeItem("token");
+    localStorage.removeItem("user");
+    router.push("/login");
+  };
+
+  return (
+    <AuthContext.Provider value={{ user, login, logout, isAuthenticated: !!user }}>
+      {children}
+    </AuthContext.Provider>
+  );
 };
 
-export { AuthProvider, useAuth };
+export const useAuth = () => {
+  const context = useContext(AuthContext);
+  if (!context) {
+    throw new Error("useAuth must be used within an AuthProvider");
+  }
+  return context;
+};
