@@ -1,9 +1,10 @@
 'use client'
-import RegisterForm from "@/components/Forms/RegisterForm";
 
 export default function HomePage() {
     
     return (
-        <RegisterForm />
+        <div>
+            <h1>Você está logado</h1>
+        </div>
     )
 }
