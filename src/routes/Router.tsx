@@ -1,4 +1,5 @@
 'use client';
+
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import { ROUTE_ENDPOINTS } from "@/services/constants/RouteConstants";
 import LoginPage from "@/pages/login";
@@ -7,32 +8,30 @@ import HomePage from "@/pages/Home";
 import { useAuth } from "@/context/AuthContext.";
 
 export default function Router() {
-    const { isAuthenticated } = useAuth();
+    const { isAuthenticated, isInitialized } = useAuth();
 
-    function publicRoute(path: string, element: React.ReactNode) {
-        return (
-            <Route
-                path={path}
-                element={isAuthenticated ? <Navigate to={ROUTE_ENDPOINTS.HOME} replace /> : element}
-            />
-        );
-    }
+    console.log('Autenticado: ', isAuthenticated);
+    console.log('Inicializado: ', isInitialized);
 
-    function AuthRoute(path: string, element: React.ReactNode) {
-        return (
-            <Route
-                path={path}
-                element={isAuthenticated ? element : <Navigate to={ROUTE_ENDPOINTS.LOGIN} replace />}
-            />
-        );
+    if (!isInitialized) {
+        return <div>Loading...</div>;
     }
 
     return (
         <BrowserRouter>
             <Routes>
-                {publicRoute(ROUTE_ENDPOINTS.LOGIN, <LoginPage />)}
-                {publicRoute(ROUTE_ENDPOINTS.REGISTER, <RegisterPage />)}
-                {AuthRoute(ROUTE_ENDPOINTS.HOME, <HomePage />)}
+                <Route
+                    path={ROUTE_ENDPOINTS.LOGIN}
+                    element={isAuthenticated ? <Navigate to={ROUTE_ENDPOINTS.HOME} /> : <LoginPage />}
+                />
+                <Route
+                    path={ROUTE_ENDPOINTS.REGISTER}
+                    element={isAuthenticated ? <Navigate to={ROUTE_ENDPOINTS.HOME} /> : <RegisterPage />}
+                />
+                <Route
+                    path={ROUTE_ENDPOINTS.HOME}
+                    element={isAuthenticated ? <HomePage /> : <Navigate to={ROUTE_ENDPOINTS.LOGIN} />}
+                />
             </Routes>
         </BrowserRouter>
     );
