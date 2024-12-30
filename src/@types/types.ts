@@ -4,3 +4,8 @@ export interface IUser {
     password: string;
     token?: string; 
 }
+
+export interface ILoginResponse {
+    user: IUser;
+    token: string;
+}
