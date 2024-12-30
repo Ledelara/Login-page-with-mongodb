@@ -30,13 +30,11 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
                 if (user && user.email) {
                     setUser(user);
                 } else {
-                    // Se os dados forem inválidos, limpe-os
                     localStorage.removeItem("token");
                     localStorage.removeItem("user");
                 }
             } catch (error) {
                 console.error("Erro ao processar o usuário salvo:", error);
-                // Limpa os dados se houver erro na análise do JSON
                 localStorage.removeItem("token");
                 localStorage.removeItem("user");
             }
@@ -53,12 +51,11 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
                 throw new Error("Resposta inválida da API");
             }
 
-            // Armazenando no localStorage
             setUser(response.user);
             localStorage.setItem("token", response.token);
             localStorage.setItem("user", JSON.stringify(response.user));
 
-            router.push("/"); // Redireciona para a página principal
+            router.push("/");
 
         } catch (error) {
             console.error("Erro ao fazer login:", error);
